@@ -14,7 +14,7 @@ const mockUsers = [
     id: 1,
     username: "mn",
     email: "mohant@gmail.com",
-    password_hash: bcrypt.hashSync("hehehehe", 10),
+    password_hash: bcrypt.hashSync("hthththt", 10),
     role: "teacher",
   },
   {
