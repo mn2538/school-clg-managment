@@ -2,7 +2,7 @@
     import { useNavigate } from "react-router-dom";
     import axios from 'axios';
     import { Box, TextField, Button, InputAdornment, IconButton } from '@mui/material';
-    import { Visibility, VisibilityOff, Password, Abc } from "@mui/icons-material";
+    import { Password, Abc } from "@mui/icons-material";
 
     export const AuthPage = () => {
         const navigate = useNavigate();

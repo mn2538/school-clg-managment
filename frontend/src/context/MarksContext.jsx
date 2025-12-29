@@ -10,20 +10,28 @@ export const MarksProvider = ({ children }) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
-
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/view-all-marks/${user.id}`,
+      let res = [];
+      if(user.role === 'teacher'){
+        res = await axios.get(
+        ` ${process.env.REACT_APP_API_URL}/view-all-marks/${user.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+        );
+      } else if(user.role === 'student'){
+        res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/individual-marks/${user.roll_no}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+      }
       setMarks(res.data);
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
     fetchMarks();
   }, []);

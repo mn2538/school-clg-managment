@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import { GoodMorning } from "../components/GoodMorning";
 import { MarksCard } from "../components/MarksCard";
@@ -10,7 +9,7 @@ export const Dashboard = () => {
         <GoodMorning name="Mohan" />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid sx={{width:"50%"}}>
         <MarksCard />
       </Grid>
     </Grid>

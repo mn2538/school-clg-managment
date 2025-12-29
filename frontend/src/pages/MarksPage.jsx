@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { DataTable } from '../components/DataTable';
 import {Modal} from '../components/Modal'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './css/MarksPage.css';
+import { useMarks } from '../context/MarksContext';
 
 export const MarksPage = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
 
-    const [marks, setMarks] = useState([]);
+    const { marks, setMarks, fetchMarks } = useMarks();
     const [showModal, setShowModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [formData, setFormData] = useState({
@@ -50,25 +52,6 @@ export const MarksPage = () => {
         }
     }
 
-    useEffect(() => {
-        const fetchMarks = async () => {
-            try{
-                const token = localStorage.getItem("token");
-
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/view-all-marks/${user.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setMarks(res.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        fetchMarks();
-    }, []);
-
     const saveMarks = async (e) => {
         e.preventDefault();
 
@@ -86,7 +69,7 @@ export const MarksPage = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setMarks(updatedRes.data);
+            fetchMarks(user.id, token);
         } catch (e) {
             console.error("Error saving marks:", e);
             alert("Error saving marks: " + (e.response?.data?.error || e.message));

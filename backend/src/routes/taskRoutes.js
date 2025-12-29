@@ -6,7 +6,7 @@ import {viewAllMarks, getIndividualMarks, updateMarks} from '../controllers/task
 const router = express.Router();
 
 router.get("/view-all-marks/:teacher_id", protect, restrictTo("admin","teacher"), viewAllMarks);
-router.get("/individual-marks/:student_id", getIndividualMarks);
+router.get("/individual-marks/:student_id", protect,restrictTo("admin","teacher","student"), getIndividualMarks);
 router.put("/update-marks/:student_id", updateMarks);
 
 export default router;
