@@ -74,7 +74,17 @@
 
             const token = jwt.sign({id: user.id, username: user.username, role: user.role}, JWT_SECRET, {expiresIn:'1d'});
 
-            res.status(200).json({message: 'Login successful', token, user: {id: user.id, username: user.username, role: user.role}});
+            let userData = {id: user.id, username: user.username, role: user.role};
+
+            // If user is a student, fetch and include their roll_no
+            if(user.role === 'student'){
+                const student = await db('students').where({user_id: user.id}).first();
+                if(student){
+                    userData.roll_no = student.roll_no;
+                }
+            }
+
+            res.status(200).json({message: 'Login successful', token, user: userData});
         } catch (error){
             console.log(error);
             res.status(500).json({error: 'Internal server error.'});
