@@ -29,10 +29,18 @@ export const viewAllMarks = async (req, res) => {
 };
 
 export const getIndividualMarks = async (req, res) => {
-  const { student_id } = req.params;
+  let { student_id } = req.params;
+  const { parent_id } = req.query;
 
-  if (!student_id) {
-    return res.status(400).json({ error: "student_id required" });
+  if (!student_id && parent_id) {
+    const studentRecord = await db('students').select('roll_no').where({parent_id: parent_id}).first();
+    if (studentRecord) {
+      student_id = studentRecord.roll_no;
+    } else {
+      return res.status(404).json({ error: "No student found for this parent" });
+    }
+  } else if (!student_id) {
+    return res.status(400).json({ error: "student_id or parent_id required" });
   }
 
   try {

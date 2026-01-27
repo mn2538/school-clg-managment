@@ -6,10 +6,12 @@ import { MarksPage } from "../pages/MarksPage";
 import { Dashboard } from "../pages/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { MarksProvider } from "../context/MarksContext";
+import {Logout} from "../components/Logout"
 
 export default function AppRoutes() {
   return (
     <MarksProvider>
+      <Logout />
       <Routes>
         <Route path="/" element={<AuthPage />} />
 

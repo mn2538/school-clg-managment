@@ -72,11 +72,12 @@
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("user", JSON.stringify(res.data.user));
                     
+                    window.dispatchEvent(new Event("storage"));
 
                     setLoading(true);
                     
                     setTimeout(() => {
-                        navigate("/markspage");
+                        navigate("/dashboard");
                     }, 1500)
 
                 } else {

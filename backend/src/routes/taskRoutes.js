@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/view-all-marks/:teacher_id", protect, restrictTo("admin","teacher"), viewAllMarks);
 router.get("/individual-marks/:student_id", protect,restrictTo("admin","teacher","student"), getIndividualMarks);
+router.get("/parent/individual-marks", protect,restrictTo("parent"), getIndividualMarks);
 router.put("/update-marks/:student_id", updateMarks);
 
 export default router;

@@ -4,11 +4,12 @@ import {Modal} from '../components/Modal'
 import { useState } from 'react';
 import './css/MarksPage.css';
 import { useMarks } from '../context/MarksContext';
+import { Box } from '@mui/system';
 
 export const MarksPage = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+    const role = user.role;
 
     const { marks, setMarks, fetchMarks } = useMarks();
     const [showModal, setShowModal] = useState(false);
@@ -78,8 +79,8 @@ export const MarksPage = () => {
     }
 
     return (
-        <div>
-            <h3>All Student Marks</h3>
+        <Box sx={{px:3}}>
+            <h3>{role === "teacher" ? "All Student Marks" : "Your Marks"}</h3>
             <DataTable data={marks} 
             editable={user && user.role === "teacher"}  
             handleEdit={handleEdit}/>
@@ -144,6 +145,6 @@ export const MarksPage = () => {
                 </form>
             )}
             </Modal>
-        </div>
+        </Box>
     );
 };
