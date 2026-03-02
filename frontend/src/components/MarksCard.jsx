@@ -9,12 +9,12 @@ export const MarksCard = () => {
   const nav = useNavigate();
 
   return (
-    <Card>
-      <Box sx={{ display: "flex", justifyContent: "space-between", padding: "0 16px" }}>
-      <CardHeader title={"Marks"} />
-      <Button onClick={() => {nav("/markspage")}}>View All</Button>
+    <Card sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 16px" }}>
+        <CardHeader title={"Marks"} sx={{ padding: "16px 0" }} />
+        <Button onClick={() => {nav("/markspage")}}>View All</Button>
       </Box>
-      <CardContent>
+      <CardContent sx={{ overflow: 'auto' }}>
         {marks.length === 0 ? (
           <p>No Marks Found</p>
         ) : (

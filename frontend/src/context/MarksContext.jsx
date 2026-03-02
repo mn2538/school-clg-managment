@@ -25,6 +25,8 @@ export const MarksProvider = ({ children }) => {
       return;
     }
 
+    let isMounted = true;
+
     const fetchMarks = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -35,28 +37,34 @@ export const MarksProvider = ({ children }) => {
             `${process.env.REACT_APP_API_URL}/view-all-marks/${user.id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setMarks(res.data);
+          if (isMounted) setMarks(res.data.data || []);
         } 
         else if (user.role === "student") {
           res = await axios.get(
             `${process.env.REACT_APP_API_URL}/individual-marks/${user.roll_no}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setMarks(res.data ? [res.data] : []);
+          if (isMounted) setMarks(res.data ? [res.data] : []);
         } 
         else if (user.role === "parent") {
           res = await axios.get(
             `${process.env.REACT_APP_API_URL}/parent/individual-marks?parent_id=${user.id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
-          setMarks(res.data ? [res.data] : []);
+          if (isMounted) setMarks(res.data ? [res.data] : []);
         }
       } catch (err) {
-        console.error(err);
+        if (isMounted) {
+          console.error(err);
+        }
       }
     };
 
     fetchMarks();
+
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   return (
@@ -71,5 +79,20 @@ export const useMarks = () => {
   if (!context) {
     throw new Error("useMarks must be used within MarksProvider");
   }
-  return context;
+  
+  const { marks, setMarks } = context;
+  
+  const fetchMarks = async (userId, token) => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/view-all-marks/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setMarks(res.data.data || []);
+    } catch (err) {
+      console.error("Error fetching marks:", err);
+    }
+  };
+
+  return { marks, setMarks, fetchMarks };
 };
